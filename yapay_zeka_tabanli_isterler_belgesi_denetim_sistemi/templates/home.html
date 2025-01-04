@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İsterler Dokümanı Denetim Sistemi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            text-align: left;
+            position: relative; /* Düğme ile ilişkili */
+        }
+        #inputArea {
+            width: 80%;
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+        #analyzeBtn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #result {
+            width: 80%;
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        #exitBtn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .red {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button id="exitBtn" onclick="exitApp()">Çıkış</button>
+        <form action="/home" method="POST">
+        <h1>İsterler Kontrol Programına Hoş Geldiniz</h1>
+        <h3>Kontrol edilmesini istediğiniz isterleri giriniz:</h3>
+        <p>(Enter tuşu ile her bir cümleyi ayrı satırda girmelisiniz)</p>
+        <textarea id="sentence" name="sentence" rows="7" cols="80" placeholder=" Metni buraya yazınız..."></textarea><br><br>
+        <button type="submit" id="analyzeBtn">Kontrol Et</button> 
+        <br><br><br><br>
+        </form>
+    
+    
+    <h2>Sonuçlar</h2>
+
+    <div id="result">
+
+        {% if message %}
+        <p>{{ message | safe }}</p>
+        {% endif %}
+
+        {% for result in results %}
+        <div style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
+            <p><b>Kontrol Edilen Cümle:</b> {{ result.sentence | safe }}</p>
+            <b><i>Kontrol Sonucu</i></b>
+            {% if result.endResult %}
+            <p>{{ result.endResult | safe }}</p>
+            {% endif %}
+
+            {% if result.redMessage %}
+            <p>{{ result.redMessage | safe }}</p>
+            {% endif %}
+
+            {% if result.orangeMessage %}
+            <p>{{ result.orangeMessage | safe }}</p>
+            {% endif %}
+            
+            {% if result.checkFull %}
+            <p>{{ result.checkFull | safe }}</p>
+            {% endif %}
+
+            {% if result.check_dott %}
+            <p>{{ result.check_dott | safe }}</p>
+            {% endif %}
+            
+            {% if result.word_repetition %}
+            <p>{{ result.word_repetition | safe }}</p>
+            {% endif %}
+        
+            {% if result.sentiment_Vader %}
+            <p>{{ result.sentiment_Vader | safe }}</p>
+            {% endif %}
+        
+            {% if result.checkVerbBeforeComma %}
+            <p>{{ result.checkVerbBeforeComma | safe }}</p>
+            {% endif %}
+        
+            {% if result.checkTechnicalTerms %}
+            <p>{{ result.checkTechnicalTerms | safe }}</p>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+
+    </div>
+    </div>
+
+    <script>
+        function exitApp() {
+            if (confirm("Uygulamadan çıkmak istediğinize emin misiniz?")) {
+                window.location.href = '/login';
+            }
+        }
+    </script>
+
+</body>
+</html>
